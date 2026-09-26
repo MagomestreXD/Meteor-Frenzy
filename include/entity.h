@@ -9,12 +9,13 @@ class Entity{
         Polygon poly;
         Vertex pos;
         Vertex prevPos;
-        Vertex direction;
-        float speed;
+        Vertex speedVec;
         SpriteType type;
 
     public: 
-        Entity(Polygon poly,Vertex pos,float speed,SpriteType type):poly(poly),pos(pos),prevPos(pos),speed(speed),type(type){};
+        Entity(Polygon poly,Vertex pos,SpriteType type):poly(poly),pos(pos),prevPos(pos),type(type){};
+
+        Entity(Polygon poly,Vertex pos,SpriteType type,Vertex speedVec):poly(poly),pos(pos),prevPos(pos),type(type),speedVec(speedVec){};
 
         void drawEntity(Rasterizer* rasterizer,SpriteManager* spriteManager,float scale,double alpha){
             Vertex tempCurrent = pos;
@@ -72,16 +73,12 @@ class Entity{
             return type;
         }
 
-        void update(){
+        void update(double step){
+            double transMatrix [3][3] = {{1,0,speedVec.getX() * step},{0,1,speedVec.getY() * step},{0,0,1}};
 
-        }
+            prevPos = pos;           
 
-        Vertex getDirection(){
-            return direction;
-        }
-
-        float getSpeed(){
-            return speed;
+            pos.multMatrix(transMatrix);
         }
 
         Polygon getPolygon(){
@@ -94,5 +91,10 @@ class Entity{
 
         Vertex getPrevPos(){
             return prevPos;
+        }
+
+        void setPos(Vertex newPos){
+            pos = newPos;
+            return;
         }
 };

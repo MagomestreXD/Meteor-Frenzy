@@ -2,11 +2,23 @@
 #include "inputState.h"
 
 class Player : public Entity{
+    private: 
+        float speed;
+        Vertex direction;
+
     public:
-        Player(Polygon poly,Vertex pos,float speed,SpriteType type):Entity(poly,pos,speed,type){
+        Player(Polygon poly,Vertex pos,float speed,SpriteType type):Entity(poly,pos,type),speed(speed){
             direction = Vertex(1,0);
         };
         
+        float getSpeed(){
+            return speed;
+        }
+
+        Vertex getDirection(){
+            return direction;
+        }
+
         void update(double step, InputState inputs){
             direction = Vertex(0,0);
             

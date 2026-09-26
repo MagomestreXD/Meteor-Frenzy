@@ -37,7 +37,7 @@ int main(){
     auto player = make_unique<Player>(polyDif,Vertex(0,0),80,SpriteType::player);
 
     entities.push_back(
-        make_unique<Entity>(poly,Vertex(40,40),0,SpriteType::inimigo)
+        make_unique<Entity>(poly,Vertex(40,40),SpriteType::inimigo,Vertex(-80,0))
     );
 
     Room room(Polygon(vector<Vertex>{Vertex(-640,-360),Vertex(640,-360),Vertex(640,360),Vertex(-640,360)}),Polygon(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)}),SpriteType::room01);
@@ -59,6 +59,8 @@ int main(){
     double accumulator = 0.0;
     
     Uint64 prevTime = SDL_GetPerformanceCounter();
+
+    game.createNewEnemy();
 
     while(running){
         SDL_Event event;
@@ -83,7 +85,7 @@ int main(){
                 }
 
                 if(event.key.key == SDLK_J){
-                    if((*game.getSpriteManager()).getScale() < 8){
+                    if((*game.getSpriteManager()).getScale() < 4){
                         (*game.getSpriteManager()).multiplyScale(2);
                         (*game.getRasterizer()).multiplyScale(2);
                     }

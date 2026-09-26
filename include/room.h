@@ -47,4 +47,21 @@ class Room{
 
            (*rasterizer).drawSprite(scaledPoly,(*spriteManager).getSprite(rasterizer,Minx,Maxx,Miny,Maxy,spritePoly.multMatrix(scaleM),type),true);
         }
+
+        float getMinx(){
+            return minx;
+        }
+
+        float getMaxx(){
+            return maxx;
+        }
+
+        float getMiny(){
+            return miny;
+        }
+
+        float getMaxy(){
+            return maxy;
+        }
+
 };

@@ -11,6 +11,16 @@ void Game::checkCollisions(){
         checkCollision(player->getPolygon(),entities[i]->getPolygon(),player->getPos(),entities[i]->getPos());       
     }  
 
+    float transMatrix [3][3]= {{1,0,player->getPos().getX()},{0,1,player->getPos().getY()},{0,0,1}};
+    Polygon tPlayer = player->getPolygon().multMatrix(transMatrix);
+    vector<Vertex>* verteces = tPlayer.getVerteces();
+
+    for(int i = 0; i < verteces->size(); i++){
+        if((*verteces)[i].getX() > room.getMaxx() || (*verteces)[i].getX() < room.getMinx() || (*verteces)[i].getY() > room.getMaxy() || (*verteces)[i].getY() < room.getMiny()){
+            player->setPos(player->getPrevPos());
+            break;
+        }
+    }
 }
 
 bool Game::checkCollision(Polygon polya, Polygon polyb, Vertex posa, Vertex posb){
@@ -166,4 +176,267 @@ bool Game::testSAT(Polygon* pa,Polygon* pb){
     }
 
     return true;
+}
+
+void Game::createNewEnemy(){
+    float oneOverSQrt2 = 0.71f;   
+
+    Polygon poly(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)});
+    SpriteType type = SpriteType::inimigo;
+    float speed = 80;
+    float speedMatrix[3][3] = {{speed,0,0},{0,speed,0},{0,0,1}};
+    int distance = 60;
+
+    random_device rd;   
+    mt19937 gen(rd());
+
+    uniform_int_distribution<int> dir(0,3);
+    int side = dir(gen);
+    
+    float roomWidth = room.getMaxx() - room.getMinx();
+    float roomHeight = room.getMaxy() - room.getMiny();
+    float rWidth3 = roomWidth/3;
+    float rHeight3 = roomHeight/3;
+
+    float inicialY = room.getMiny() - distance;
+    float inicialX = room.getMinx() - distance;
+
+    uniform_int_distribution<int> Xgen(room.getMinx(),room.getMaxx());
+    uniform_int_distribution<int> Ygen(room.getMiny(),room.getMaxy());
+    
+    uniform_int_distribution<int> btween2(0,1);
+    uniform_int_distribution<int> btween3(0,2);
+
+    Vertex direction;
+    int velDir; 
+
+    int x;
+    int y;
+
+    switch(side){
+        case 0:
+            x = Xgen(gen);      
+            if(x < rWidth3 + room.getMinx()){
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,1);          
+                }else{
+                    direction = Vertex(oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+
+            }else if(x < (2 * rWidth3) + room.getMinx()){
+                velDir = btween3(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,1);          
+                }else if(velDir ==  1){
+                    direction = Vertex(oneOverSQrt2,oneOverSQrt2);
+                }else{
+                    direction = Vertex(-oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+           
+            }else{
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,1);          
+                }else{
+                    direction = Vertex(-oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+            }
+
+            break;
+        case 1:
+            x = Xgen(gen);      
+            if(x < rWidth3 + room.getMinx()){
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,-1);          
+                }else{
+                    direction = Vertex(oneOverSQrt2,-oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+
+            }else if(x < (2 * rWidth3) + room.getMinx()){
+                velDir = btween3(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,-1);          
+                }else if(velDir ==  1){
+                    direction = Vertex(oneOverSQrt2,-oneOverSQrt2);
+                }else{
+                    direction = Vertex(-oneOverSQrt2,-oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+           
+            }else{
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,-1);          
+                }else{
+                    direction = Vertex(-oneOverSQrt2,-oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+            }
+
+            break;
+        case 2:
+            y = Ygen(gen);      
+            if(y < rHeight3 + room.getMiny()){
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(1,0);          
+                }else{
+                    direction = Vertex(oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+
+            }else if(y < (2 * rHeight3) + room.getMiny()){
+                velDir = btween3(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(1,0);          
+                }else if(velDir ==  1){
+                    direction = Vertex(oneOverSQrt2,oneOverSQrt2);
+                }else{
+                    direction = Vertex(oneOverSQrt2,-oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+           
+            }else{
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(1,0);          
+                }else{
+                    direction = Vertex(oneOverSQrt2,-oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+            }
+            break;
+        case 3:
+            y = Ygen(gen);      
+            if(y < rHeight3 + room.getMiny()){
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(-1,0);          
+                }else{
+                    direction = Vertex(-oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+
+            }else if(y < (2 * rHeight3) + room.getMiny()){
+                velDir = btween3(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(-1,0);          
+                }else if(velDir ==  1){
+                    direction = Vertex(-oneOverSQrt2,oneOverSQrt2);
+                }else{
+                    direction = Vertex(-oneOverSQrt2,-oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+           
+            }else{
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(-1,0);          
+                }else{
+                    direction = Vertex(-oneOverSQrt2,-oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+            }
+            break;
+        default:
+            int x = Xgen(gen);      
+            if(x < rWidth3 + room.getMinx()){
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,1);          
+                }else{
+                    direction = Vertex(oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+
+            }else if(x < (2 * rWidth3) + room.getMinx()){
+                velDir = btween3(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,1);          
+                }else if(velDir ==  1){
+                    direction = Vertex(oneOverSQrt2,oneOverSQrt2);
+                }else{
+                    direction = Vertex(-oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+           
+            }else{
+                velDir = btween2(gen);
+
+                if(velDir == 0){
+                    direction = Vertex(0,1);          
+                }else{
+                    direction = Vertex(-oneOverSQrt2,oneOverSQrt2);
+                }
+
+                direction.multMatrix(speedMatrix);       
+
+                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+            }
+
+            break;
+    }
+
 }
