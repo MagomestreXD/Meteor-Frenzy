@@ -25,8 +25,8 @@ class Game {
         double inicialSpawnInterval = 2.0;
         double spawnInterval;
         double spawnTimer = 0.0;
-        double spawnDificulty = 0.06;
-        double velocityDificulty = 0.20;
+        double spawnDificulty = 0.10;
+        double velocityDificulty = 0.30;
         double spawnMaxDificulty = 0.2;
 
     public:
@@ -50,6 +50,7 @@ class Game {
         }
 
         void updateLogic(double step){
+
             player->update(step,inputs);
 
             if(!entities.empty()){

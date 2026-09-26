@@ -34,7 +34,7 @@ int main(){
 
     vector<unique_ptr<Entity>> entities;
 
-    auto player = make_unique<Player>(polyDif,Vertex(0,0),80,SpriteType::player);
+    auto player = make_unique<Player>(polyDif,Vertex(0,0),100,SpriteType::player);
 
     Room room(Polygon(vector<Vertex>{Vertex(-640,-360),Vertex(640,-360),Vertex(640,360),Vertex(-640,360)}),Polygon(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)}),SpriteType::room01);
 

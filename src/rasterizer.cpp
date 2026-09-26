@@ -39,7 +39,11 @@ void Rasterizer::setPixel(int x,int y, uint32_t color,bool screenCoordinates){
 }
 
 void Rasterizer::setPixel(int x,uint32_t color,int yWidth){
-    framebuffer[yWidth + x]= color;
+    int index = x + yWidth;
+    if(index < 0 || index >= (int)framebuffer.size()){
+        return;
+    }
+    framebuffer[index]= color;
     return;
 }
 
@@ -761,6 +765,7 @@ void Rasterizer::drawSprite(Polygon poly, Texture* sprite,bool opaque){
     int textureStartY = drawMinY - screenMinY;
 
     int textureWidth = sprite->getWidth();
+    int textureHeight = sprite->getHeight();
 
     vector<uint32_t>& textureData = sprite->getData();
 
@@ -768,12 +773,55 @@ void Rasterizer::drawSprite(Polygon poly, Texture* sprite,bool opaque){
 
     int numOfPixels = drawMaxX - drawMinX;
 
+    int textureAvailableWidth = textureWidth - textureStartX;
+    int textureAvailableHeight = textureHeight - textureStartY;
+
+    if(numOfPixels > textureAvailableWidth){
+        numOfPixels = textureAvailableWidth;
+    }
+
+    if(numOfLines > textureAvailableHeight){
+        numOfLines = textureAvailableHeight;
+    }
+
     for(int y = 0; y < numOfLines ; y++){
 
         int textureY = textureStartY + y;
 
         int framebufferIndex = (drawMinY + y) * width;
         int textureIndex = textureY * textureWidth + textureStartX;
+
+int framebufferStart = framebufferIndex + drawMinX;
+
+    if(textureIndex < 0 ||
+       textureIndex + numOfPixels > (int)textureData.size()){
+
+        cout << "\n=== ERRO TEXTURE ===\n";
+        cout << "textureIndex: " << textureIndex << "\n";
+        cout << "numOfPixels: " << numOfPixels << "\n";
+        cout << "textureSize: " << textureData.size() << "\n";
+        cout << "textureY: " << textureY << "\n";
+        cout << "textureStartX: " << textureStartX << "\n";
+        cout << "textureWidth: " << textureWidth << "\n";
+        cout << "numOfLines: " << numOfLines << "\n";
+        cout << "y: " << y << "\n";
+
+        return;
+    }
+
+    if(framebufferStart < 0 ||
+       framebufferStart + numOfPixels > (int)framebuffer.size()){
+
+        cout << "\n=== ERRO FRAMEBUFFER ===\n";
+        cout << "framebufferStart: " << framebufferStart << "\n";
+        cout << "numOfPixels: " << numOfPixels << "\n";
+        cout << "framebufferSize: " << framebuffer.size() << "\n";
+        cout << "drawMinX: " << drawMinX << "\n";
+        cout << "drawMinY: " << drawMinY << "\n";
+        cout << "y: " << y << "\n";
+
+        return;
+    }
 
         if(opaque){
             memcpy(

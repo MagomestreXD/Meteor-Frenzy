@@ -93,20 +93,22 @@ bool Game::checkCollision(Polygon polya, Polygon polyb, Vertex posa, Vertex posb
 }
 
 bool Game::testSAT(Polygon* pa,Polygon* pb){
+    vector<Vertex>* va = pa->getVerteces();
+    vector<Vertex>* vb = pb->getVerteces();
 
-    for(int i = 0; i < pa->getVerteces()->size(); i++){
-        int next = (i + 1) % pa->getVerteces()->size();
+    for(int i = 0; i < va->size(); i++){
+        int next = (i + 1) % va->size();
         
-        float axisx = (*pa->getVerteces())[i].getY() - (*pa->getVerteces())[next].getY();
-        float axisy = (*pa->getVerteces())[next].getX() - (*pa->getVerteces())[i].getX();
+        float axisx = (*va)[i].getY() - (*va)[next].getY();
+        float axisy = (*va)[next].getX() - (*va)[i].getX();
 
-        float minproja = ( (*pa->getVerteces())[0].getX() * axisx + (*pa->getVerteces())[0].getY() * axisy );
-        float maxproja = ( (*pa->getVerteces())[0].getX() * axisx + (*pa->getVerteces())[0].getY() * axisy );
+        float minproja = ( (*va)[0].getX() * axisx + (*va)[0].getY() * axisy );
+        float maxproja = ( (*va)[0].getX() * axisx + (*va)[0].getY() * axisy );
 
         float proj;
 
-        for(int i = 1; i < pa->getVerteces()->size();i++){
-            proj = ( (*pa->getVerteces())[i].getX() * axisx + (*pa->getVerteces())[i].getY() * axisy );
+        for(int i = 1; i < va->size();i++){
+            proj = ( (*va)[i].getX() * axisx + (*va)[i].getY() * axisy );
             if(proj < minproja){
                 minproja = proj;
             }
@@ -115,11 +117,11 @@ bool Game::testSAT(Polygon* pa,Polygon* pb){
             }
         }
 
-        float minprojb = ( (*pb->getVerteces())[0].getX() * axisx + (*pb->getVerteces())[0].getY() * axisy );
-        float maxprojb = ( (*pb->getVerteces())[0].getX() * axisx + (*pb->getVerteces())[0].getY() * axisy );
+        float minprojb = ( (*vb)[0].getX() * axisx + (*vb)[0].getY() * axisy );
+        float maxprojb = ( (*vb)[0].getX() * axisx + (*vb)[0].getY() * axisy );
 
-        for(int i = 1; i < pb->getVerteces()->size();i++){
-            proj = ( (*pb->getVerteces())[i].getX() * axisx + (*pb->getVerteces())[i].getY() * axisy );
+        for(int i = 1; i < vb->size();i++){
+            proj = ( (*vb)[i].getX() * axisx + (*vb)[i].getY() * axisy );
             if(proj < minprojb){
                 minprojb = proj;
             }
@@ -133,19 +135,19 @@ bool Game::testSAT(Polygon* pa,Polygon* pb){
         }
     }
 
-    for(int i = 0; i < pb->getVerteces()->size(); i++){
-        int next = (i + 1) % pb->getVerteces()->size();
+    for(int i = 0; i < vb->size(); i++){
+        int next = (i + 1) % vb->size();
         
-        float axisx = (*pb->getVerteces())[i].getY() - (*pb->getVerteces())[next].getY();
-        float axisy = (*pb->getVerteces())[next].getX() - (*pb->getVerteces())[i].getX();
+        float axisx = (*vb)[i].getY() - (*vb)[next].getY();
+        float axisy = (*vb)[next].getX() - (*vb)[i].getX();
 
-        float minprojb = ( (*pb->getVerteces())[0].getX() * axisx + (*pb->getVerteces())[0].getY() * axisy );
-        float maxprojb = ( (*pb->getVerteces())[0].getX() * axisx + (*pb->getVerteces())[0].getY() * axisy );
+        float minprojb = ( (*vb)[0].getX() * axisx + (*vb)[0].getY() * axisy );
+        float maxprojb = ( (*vb)[0].getX() * axisx + (*vb)[0].getY() * axisy );
 
         float proj;
 
-        for(int i = 1; i < pb->getVerteces()->size();i++){
-            proj = ( (*pb->getVerteces())[i].getX() * axisx + (*pb->getVerteces())[i].getY() * axisy );
+        for(int i = 1; i < vb->size();i++){
+            proj = ( (*vb)[i].getX() * axisx + (*vb)[i].getY() * axisy );
             if(proj < minprojb){
                 minprojb = proj;
             }
@@ -154,11 +156,11 @@ bool Game::testSAT(Polygon* pa,Polygon* pb){
             }
         }
 
-        float minproja = ( (*pa->getVerteces())[0].getX() * axisx + (*pa->getVerteces())[0].getY() * axisy );
-        float maxproja = ( (*pa->getVerteces())[0].getX() * axisx + (*pa->getVerteces())[0].getY() * axisy );
+        float minproja = ( (*va)[0].getX() * axisx + (*va)[0].getY() * axisy );
+        float maxproja = ( (*va)[0].getX() * axisx + (*va)[0].getY() * axisy );
 
-        for(int i = 1; i < pa->getVerteces()->size();i++){
-            proj = ( (*pa->getVerteces())[i].getX() * axisx + (*pa->getVerteces())[i].getY() * axisy );
+        for(int i = 1; i < va->size();i++){
+            proj = ( (*va)[i].getX() * axisx + (*va)[i].getY() * axisy );
             if(proj < minproja){
                 minproja = proj;
             }
@@ -438,7 +440,6 @@ void Game::createNewEnemy(){
             break;
     }
 
-    cout<< "speed: " << speed<<endl;
 }
 
 void Game::checkEnemiesOutOfBounds(){
