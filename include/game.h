@@ -43,9 +43,14 @@ class Game {
 
         void updateLogic(double step){
             player->update(step,inputs);
-            for(int i = 0; i < entities.size(); i++){
-                entities[i]->update(step);
+
+            if(!entities.empty()){
+                for(int i = 0; i < entities.size(); i++){
+                    entities[i]->update(step);
+                }
             }
+
+            checkEnemiesOutOfBounds();
 
             checkCollisions();
         }       
@@ -68,15 +73,22 @@ class Game {
             rasterizer.setCamPos(tempCurrent);
 
             room.draw(&rasterizer,&spriteManager,spriteManager.getScale());
-            drawEntities(alpha);
-            player->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(), alpha);
-
-            vector<Vertex> enemyPos;
-            for(const unique_ptr<Entity>& entity : entities){
-                enemyPos.push_back(entity->getPos());
+            if(!entities.empty()){
+                drawEntities(alpha);
             }
 
-            minimap.draw(&rasterizer,player->getPos(),enemyPos);
+            player->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(), alpha);
+
+            if(!entities.empty()){
+                vector<Vertex> enemyPos;
+                for(const unique_ptr<Entity>& entity : entities){
+                    enemyPos.push_back(entity->getPos());
+                }
+
+                minimap.draw(&rasterizer,player->getPos(),enemyPos);
+            }else{
+                minimap.draw(&rasterizer,player->getPos());
+            }
         }
 
         void drawEntities(double alpha){
@@ -96,4 +108,6 @@ class Game {
         bool testSAT(Polygon* pa,Polygon* pb);
 
         void createNewEnemy();
+
+        void checkEnemiesOutOfBounds();
 };

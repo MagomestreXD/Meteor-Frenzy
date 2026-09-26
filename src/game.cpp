@@ -1,15 +1,12 @@
 #include "game.h"
 
 void Game::checkCollisions(){
-    for(int i = 0; i < entities.size() - 1; i++){
-        for(int j = i + 1; j < entities.size();j++){
-            checkCollision(entities[i]->getPolygon(),entities[j]->getPolygon(),entities[i]->getPos(),entities[j]->getPos());
-        }
-    }
 
-    for(int i = 0; i < entities.size(); i++){
-        checkCollision(player->getPolygon(),entities[i]->getPolygon(),player->getPos(),entities[i]->getPos());       
-    }  
+    if(!entities.empty()){
+        for(int i = 0; i < entities.size(); i++){
+            checkCollision(player->getPolygon(),entities[i]->getPolygon(),player->getPos(),entities[i]->getPos());       
+        }  
+    }
 
     float transMatrix [3][3]= {{1,0,player->getPos().getX()},{0,1,player->getPos().getY()},{0,0,1}};
     Polygon tPlayer = player->getPolygon().multMatrix(transMatrix);
@@ -439,4 +436,25 @@ void Game::createNewEnemy(){
             break;
     }
 
+}
+
+void Game::checkEnemiesOutOfBounds(){
+    int distance = 60;
+
+    float inicialY = room.getMiny() - distance;
+    float inicialX = room.getMinx() - distance;
+    float maxY = room.getMaxy() + distance;
+    float maxX = room.getMaxx() + distance;
+
+    if(!entities.empty()){
+        for(auto it = entities.begin(); it != entities.end();){
+            Vertex pos = (*it)->getPos();
+            if(pos.getY() < inicialY || pos.getY() > maxY || pos.getX() < inicialX || pos.getX() > maxX){
+                it = entities.erase(it);
+            }else{
+                ++it;
+            }   
+    
+        }
+    }
 }
