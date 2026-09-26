@@ -180,7 +180,9 @@ void Game::createNewEnemy(){
 
     Polygon poly(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)});
     SpriteType type = SpriteType::inimigo;
-    float speed = 80;
+    float maxSpeed = 350;
+    float inicialSpeed = 120;
+    float speed = min(maxSpeed,inicialSpeed + (float)(gameTimer * velocityDificulty));
     float speedMatrix[3][3] = {{speed,0,0},{0,speed,0},{0,0,1}};
     int distance = 60;
 
@@ -436,6 +438,7 @@ void Game::createNewEnemy(){
             break;
     }
 
+    cout<< "speed: " << speed<<endl;
 }
 
 void Game::checkEnemiesOutOfBounds(){

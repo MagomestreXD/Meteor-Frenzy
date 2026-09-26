@@ -21,9 +21,17 @@ class Game {
         InputState inputs;
         int round = 1;
         Viewport minimap;
+        double gameTimer = 0.0;
+        double inicialSpawnInterval = 2.0;
+        double spawnInterval;
+        double spawnTimer = 0.0;
+        double spawnDificulty = 0.04;
+        double velocityDificulty = 0.10;
+        double spawnMaxDificulty = 0.2;
 
     public:
         Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.25,(room.getMaxy() - room.getMiny()) * 0.25,0.25f){
+            spawnInterval = inicialSpawnInterval;
         };
 
         void iniGame(){
@@ -53,6 +61,16 @@ class Game {
             checkEnemiesOutOfBounds();
 
             checkCollisions();
+            
+            gameTimer += step;
+            spawnTimer += step;
+            
+            if(spawnTimer >= spawnInterval){
+                spawnTimer = 0.0;
+                createNewEnemy();
+            }
+
+            spawnInterval = max(spawnMaxDificulty,inicialSpawnInterval - (gameTimer * spawnDificulty));
         }       
 
         void drawFrame(double alpha){

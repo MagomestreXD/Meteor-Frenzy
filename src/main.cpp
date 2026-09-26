@@ -36,10 +36,6 @@ int main(){
 
     auto player = make_unique<Player>(polyDif,Vertex(0,0),80,SpriteType::player);
 
-    entities.push_back(
-        make_unique<Entity>(poly,Vertex(40,40),SpriteType::inimigo,Vertex(-80,0))
-    );
-
     Room room(Polygon(vector<Vertex>{Vertex(-640,-360),Vertex(640,-360),Vertex(640,360),Vertex(-640,360)}),Polygon(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)}),SpriteType::room01);
 
     Game game(move(player),move(entities),Rasterizer(renderer,Height,Width,scale),SpriteManager(scale),room);   
