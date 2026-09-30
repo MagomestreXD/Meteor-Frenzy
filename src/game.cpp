@@ -3,8 +3,32 @@
 void Game::checkCollisions(){
 
     if(!entities.empty()){
-        for(int i = 0; i < entities.size(); i++){
-            checkCollision(player->getPolygon(),entities[i]->getPolygon(),player->getPos(),entities[i]->getPos());       
+        for(auto it = entities.begin(); it != entities.end();){
+            if(checkCollision(player->getPolygon(),(*it)->getPolygon(),player->getPos(),(*it)->getPos())){
+                it = entities.erase(it);
+            }else{
+                it++;
+            }       
+        }  
+    }
+
+    if(!entities.empty() && !projectiles.empty()){
+        for(auto itEn = entities.begin(); itEn != entities.end();){
+            bool colided = false;
+            for(auto itProj = projectiles.begin(); itProj != projectiles.end();){
+                if(checkCollision((*itEn)->getPolygon(),(*itProj)->getPolygon(),(*itEn)->getPos(),(*itProj)->getPos())){
+                    itEn = entities.erase(itEn);
+                    itProj = projectiles.erase(itProj);
+                    colided = true;
+                    break;
+                }else{
+                    itProj++;
+                }       
+            }
+            
+            if(!colided){
+                itEn++;
+            }
         }  
     }
 

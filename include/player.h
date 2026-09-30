@@ -5,9 +5,10 @@ class Player : public Entity{
     private: 
         float speed;
         Vertex direction;
-
+        float attackCooldown;
+        float attackTimer = 0.0f;
     public:
-        Player(Polygon poly,Vertex pos,float speed,SpriteType type):Entity(poly,pos,type),speed(speed){
+        Player(Polygon poly,Vertex pos,float speed,SpriteType type,float attackCooldown):Entity(poly,pos,type),speed(speed),attackCooldown(attackCooldown){
             direction = Vertex(1,0);
         };
         
@@ -19,7 +20,18 @@ class Player : public Entity{
             return direction;
         }
 
-        void update(double step, InputState inputs){
+        bool update(double step, InputState inputs){
+            bool attack = false;
+
+            if(inputs.m1){
+                if(attackTimer <= 0){
+                    attackTimer = attackCooldown;
+                    attack = true;
+                }else{
+                    attackTimer -= step;
+                }
+            }
+
             direction = Vertex(0,0);
             
             if(inputs.up){
@@ -52,6 +64,7 @@ class Player : public Entity{
 
             pos.multMatrix(velocity);
 
+            return attack;
         };
 
 };

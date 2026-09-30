@@ -17,6 +17,9 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::room01:
             path = "resources/room01.png";
             break;
+        case SpriteType::project:
+            path = "resources/project.png";
+            break;
         default:
             path = "resources/bruh.png";
             break;

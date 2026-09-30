@@ -34,7 +34,7 @@ int main(){
 
     vector<unique_ptr<Entity>> entities;
 
-    auto player = make_unique<Player>(polyDif,Vertex(0,0),100,SpriteType::player);
+    auto player = make_unique<Player>(polyDif,Vertex(0,0),100,SpriteType::player,1.0f);
 
     Room room(Polygon(vector<Vertex>{Vertex(-640,-360),Vertex(640,-360),Vertex(640,360),Vertex(-640,360)}),Polygon(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)}),SpriteType::room01);
 
@@ -98,6 +98,12 @@ int main(){
 
             }
 
+            if(event.type == SDL_EVENT_MOUSE_BUTTON_DOWN){
+                if(event.button.button == SDL_BUTTON_LEFT){
+                    (*game.getInputs()).m1 = true;   
+                }
+            }
+
             if(event.type == SDL_EVENT_KEY_UP){
                 if(event.key.key == SDLK_W){
                     (*game.getInputs()).up = false;
@@ -112,6 +118,13 @@ int main(){
                     (*game.getInputs()).right = false;
                 }
             }
+
+            if(event.type == SDL_EVENT_MOUSE_BUTTON_UP){
+                if(event.button.button == SDL_BUTTON_LEFT){
+                    (*game.getInputs()).m1 = false;   
+                }
+            }
+
         }
         
         (*game.getRasterizer()).clearFrameBuffer();

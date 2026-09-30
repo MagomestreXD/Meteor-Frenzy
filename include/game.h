@@ -15,6 +15,7 @@ class Game {
     private:
         unique_ptr<Player> player;
         vector<unique_ptr<Entity>> entities;
+        vector<unique_ptr<Entity>> projectiles;
         Room room;
         Rasterizer rasterizer;
         SpriteManager spriteManager;
@@ -51,11 +52,57 @@ class Game {
 
         void updateLogic(double step){
 
-            player->update(step,inputs);
+            if(player->update(step,inputs)){
+                cout<<"attaque realizado"<<endl;
+                float mx;
+                float my;
+
+                SDL_GetMouseState(&mx,&my);
+
+                mx = mx - rasterizer.getWidth()/2;
+                my = my - rasterizer.getHeight()/2;
+
+                float magnitude = sqrt(mx*mx + my*my);
+
+                if(magnitude != 0){
+                    mx /= magnitude;
+                    my /= magnitude;
+                }
+                
+                float iniSpaceMatrix [3][3] = {{32,0,0},{0,32,0},{0,0,1}};
+
+                Vertex uniVector = Vertex(mx,my);
+
+                Vertex projPos = uniVector;
+
+                projPos.multMatrix(iniSpaceMatrix);
+                
+                float playerTranMatrix [3][3] = {{1,0,player->getPos().getX()},{0,1,player->getPos().getY()},{0,0,1}};
+
+                projPos.multMatrix(playerTranMatrix);
+
+                Polygon poly(vector<Vertex>{Vertex(-8,-8),Vertex(8,-8),Vertex(8,8),Vertex(-8,8)});
+
+                float speed = player->getSpeed() * 1.2;
+
+                Vertex velocity = uniVector;
+
+                float speedMatrix [3][3] = {{speed,0,0},{0,speed,0},{0,0,1}};
+
+                velocity.multMatrix(speedMatrix);
+
+                projectiles.push_back(make_unique<Entity>(poly,projPos,SpriteType::project,velocity));
+            }
 
             if(!entities.empty()){
                 for(int i = 0; i < entities.size(); i++){
                     entities[i]->update(step);
+                }
+            }
+
+            if(!projectiles.empty()){
+                for(int i = 0; i < projectiles.size(); i++){
+                    projectiles[i]->update(step);
                 }
             }
 
@@ -92,8 +139,13 @@ class Game {
             rasterizer.setCamPos(tempCurrent);
 
             room.draw(&rasterizer,&spriteManager,spriteManager.getScale());
+
             if(!entities.empty()){
                 drawEntities(alpha);
+            }
+
+            if(!projectiles.empty()){
+                drawProjectiles(alpha);
             }
 
             player->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(), alpha);
@@ -103,7 +155,6 @@ class Game {
                 for(const unique_ptr<Entity>& entity : entities){
                     enemyPos.push_back(entity->getPos());
                 }
-
                 minimap.draw(&rasterizer,player->getPos(),enemyPos);
             }else{
                 minimap.draw(&rasterizer,player->getPos());
@@ -116,6 +167,12 @@ class Game {
             }
         }
         
+        void drawProjectiles(double alpha){
+            for(int i = 0; i < projectiles.size(); i++){
+                projectiles[i]->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(),alpha);
+            }
+        }
+
         InputState* getInputs(){
             return &inputs;
         }
