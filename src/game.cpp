@@ -6,17 +6,57 @@ void Game::checkCollisions(){
         for(auto it = entities.begin(); it != entities.end();){
             if(checkCollision(player->getPolygon(),(*it)->getPolygon(),player->getPos(),(*it)->getPos())){
                 it = entities.erase(it);
+                player->setHealth(player->getHealth() - 1);
             }else{
                 it++;
             }       
         }  
     }
 
+    random_device rd;   
+    mt19937 gen(rd());
+    uniform_int_distribution<int> luck(1,100);
+
+    if(!upgrades.empty()){
+        for(auto it = upgrades.begin(); it != upgrades.end();){
+            if(checkCollision(player->getPolygon(),(*it)->getPolygon(),player->getPos(),(*it)->getPos())){
+                it = upgrades.erase(it);
+                int rng = luck(gen);
+                if(rng <= 20){
+                    player->upgrade(UpgradeType::health,1);
+                }else if(rng <= 40){
+                    player->upgrade(UpgradeType::playerSpeed,1.15);
+                }else if(rng <= 60){
+                    player->upgrade(UpgradeType::projectileSpeed,1.2);
+                }else if(rng <= 80){
+                    player->upgrade(UpgradeType::maxHealth,1);
+                }else if(rng <= 100){
+                    player->upgrade(UpgradeType::attackCooldown,0.85);
+                }
+            }else{
+                it++;
+            }
+        }
+    }
+
+    Polygon poly(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)});
+
     if(!entities.empty() && !projectiles.empty()){
         for(auto itEn = entities.begin(); itEn != entities.end();){
             bool colided = false;
             for(auto itProj = projectiles.begin(); itProj != projectiles.end();){
                 if(checkCollision((*itEn)->getPolygon(),(*itProj)->getPolygon(),(*itEn)->getPos(),(*itProj)->getPos())){
+                    if((*itEn)->getPos().getX() < room.getMinx() || (*itEn)->getPos().getX() > room.getMaxx() || (*itEn)->getPos().getY() < room.getMiny() || (*itEn)->getPos().getY() > room.getMaxy()){
+
+                    }else{
+                        int rng = luck(gen);
+                        if(rng > 25){
+                            cout<<"Unlucky..."<<endl;
+                        }else{
+                            upgrades.push_back(make_unique<Upgrade>(poly,(*itEn)->getPos(),SpriteType::upgrade,Vertex(0,0)));
+                        }
+                    } 
+
                     itEn = entities.erase(itEn);
                     itProj = projectiles.erase(itProj);
                     colided = true;

@@ -4,5 +4,6 @@ enum class SpriteType{
     inimigo,
     room01,
     project,
+    upgrade,
     Count
 };

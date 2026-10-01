@@ -6,6 +6,7 @@
 #include "spriteManager.h"
 #include "room.h"
 #include "viewport.h"
+#include "upgrade.h"
 #include <iostream>
 #include <random>
 
@@ -16,6 +17,7 @@ class Game {
         unique_ptr<Player> player;
         vector<unique_ptr<Entity>> entities;
         vector<unique_ptr<Entity>> projectiles;
+        vector<unique_ptr<Upgrade>> upgrades;
         Room room;
         Rasterizer rasterizer;
         SpriteManager spriteManager;
@@ -52,8 +54,11 @@ class Game {
 
         void updateLogic(double step){
 
+            /*if(player->getHealth() <= 0){
+                cout<<"Game Over"<<endl;
+            }*/
+
             if(player->update(step,inputs)){
-                cout<<"attaque realizado"<<endl;
                 float mx;
                 float my;
 
@@ -83,11 +88,9 @@ class Game {
 
                 Polygon poly(vector<Vertex>{Vertex(-8,-8),Vertex(8,-8),Vertex(8,8),Vertex(-8,8)});
 
-                float speed = player->getSpeed() * 1.2;
-
                 Vertex velocity = uniVector;
 
-                float speedMatrix [3][3] = {{speed,0,0},{0,speed,0},{0,0,1}};
+                float speedMatrix [3][3] = {{player->getProjctSpeed(),0,0},{0,player->getProjctSpeed(),0},{0,0,1}};
 
                 velocity.multMatrix(speedMatrix);
 
@@ -103,6 +106,20 @@ class Game {
             if(!projectiles.empty()){
                 for(int i = 0; i < projectiles.size(); i++){
                     projectiles[i]->update(step);
+                }
+            }
+
+            if(!upgrades.empty()){
+                for(int i = 0; i < upgrades.size(); i++){
+                    upgrades[i]->update(step);
+                }
+                
+                for(auto it = upgrades.begin(); it != upgrades.end();){
+                    if((*it)->timesUp()){
+                        it = upgrades.erase(it);
+                    }else{
+                        it++;
+                    }
                 }
             }
 
@@ -148,6 +165,10 @@ class Game {
                 drawProjectiles(alpha);
             }
 
+            if(!upgrades.empty()){
+                drawUpgrades(alpha);
+            }
+
             player->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(), alpha);
 
             if(!entities.empty()){
@@ -170,6 +191,12 @@ class Game {
         void drawProjectiles(double alpha){
             for(int i = 0; i < projectiles.size(); i++){
                 projectiles[i]->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(),alpha);
+            }
+        }
+
+        void drawUpgrades(double alpha){
+            for(int i = 0; i < upgrades.size(); i++){
+                upgrades[i]->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(),alpha);
             }
         }
 

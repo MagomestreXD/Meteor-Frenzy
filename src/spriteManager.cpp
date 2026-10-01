@@ -20,6 +20,9 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::project:
             path = "resources/project.png";
             break;
+        case SpriteType::upgrade:
+            path = "resources/upgrade.png";
+            break;
         default:
             path = "resources/bruh.png";
             break;
