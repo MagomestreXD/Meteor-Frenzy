@@ -51,7 +51,6 @@ void Game::checkCollisions(){
                     }else{
                         int rng = luck(gen);
                         if(rng > 25){
-                            cout<<"Unlucky..."<<endl;
                         }else{
                             upgrades.push_back(make_unique<Upgrade>(poly,(*itEn)->getPos(),SpriteType::upgrade,Vertex(0,0)));
                         }
@@ -525,4 +524,26 @@ void Game::checkEnemiesOutOfBounds(){
     
         }
     }
+}
+
+void Game::checkProjectilesOutOfBounds(){
+    int distance = 60;
+
+    float inicialY = room.getMiny() - distance;
+    float inicialX = room.getMinx() - distance;
+    float maxY = room.getMaxy() + distance;
+    float maxX = room.getMaxx() + distance;
+
+    if(!projectiles.empty()){
+        for(auto it = projectiles.begin(); it != projectiles.end();){
+            Vertex pos = (*it)->getPos();
+            if(pos.getY() < inicialY || pos.getY() > maxY || pos.getX() < inicialX || pos.getX() > maxX){
+                it = projectiles.erase(it);
+            }else{
+                ++it;
+            }   
+    
+        }
+    }
+
 }

@@ -33,7 +33,7 @@ class Game {
         double spawnMaxDificulty = 0.2;
 
     public:
-        Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.25,(room.getMaxy() - room.getMiny()) * 0.25,0.25f){
+        Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.21,(room.getMaxy() - room.getMiny()) * 0.21,0.21f){
             spawnInterval = inicialSpawnInterval;
         };
 
@@ -124,6 +124,7 @@ class Game {
             }
 
             checkEnemiesOutOfBounds();
+            checkProjectilesOutOfBounds();
 
             checkCollisions();
             
@@ -213,4 +214,7 @@ class Game {
         void createNewEnemy();
 
         void checkEnemiesOutOfBounds();
+
+        void checkProjectilesOutOfBounds();
 };
+
