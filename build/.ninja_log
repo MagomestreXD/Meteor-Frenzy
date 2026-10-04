@@ -32,3 +32,7 @@
 32	3851	8128571218031055	CMakeFiles/MeuJogo.dir/src/game.cpp.obj	df486f72767dbf5b
 13	3947	8128571217838972	CMakeFiles/MeuJogo.dir/src/main.cpp.obj	d24327f005442ec6
 3947	4564	8128571257171768	MeuJogo.exe	bac2b2134cead63b
+22	1629	8128607267934218	CMakeFiles/MeuJogo.dir/src/spriteManager.cpp.obj	a8ae31b37489d4ad
+14	2353	8128607267850626	CMakeFiles/MeuJogo.dir/src/main.cpp.obj	d24327f005442ec6
+32	1919	8128609807221105	CMakeFiles/MeuJogo.dir/src/game.cpp.obj	df486f72767dbf5b
+1920	3314	8128609826109242	MeuJogo.exe	bac2b2134cead63b

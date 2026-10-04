@@ -244,7 +244,6 @@ void Game::createNewEnemy(){
     float oneOverSQrt2 = 0.71f;   
 
     Polygon poly(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)});
-    SpriteType type = SpriteType::inimigo;
     float maxSpeed = 350;
     float inicialSpeed = 120;
     float speed = min(maxSpeed,inicialSpeed + (float)(gameTimer * velocityDificulty));
@@ -277,6 +276,10 @@ void Game::createNewEnemy(){
     int x;
     int y;
 
+    uniform_int_distribution<int> btween4(0,3);
+
+    int type;
+
     switch(side){
         case 0:
             x = Xgen(gen);      
@@ -291,7 +294,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                }
 
             }else if(x < (2 * rWidth3) + room.getMinx()){
                 velDir = btween3(gen);
@@ -306,7 +315,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                }
            
             }else{
                 velDir = btween2(gen);
@@ -319,7 +334,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                }
             }
 
             break;
@@ -336,7 +357,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo02,direction));
+                }else{    
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+                }
 
             }else if(x < (2 * rWidth3) + room.getMinx()){
                 velDir = btween3(gen);
@@ -351,8 +378,14 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
-           
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+                }
+
             }else{
                 velDir = btween2(gen);
 
@@ -364,7 +397,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,-inicialY),SpriteType::inimigo,direction));
+                }
             }
 
             break;
@@ -381,8 +420,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+                type = btween4(gen);
 
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+                }
             }else if(y < (2 * rHeight3) + room.getMiny()){
                 velDir = btween3(gen);
 
@@ -396,8 +440,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
-           
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+                }
             }else{
                 velDir = btween2(gen);
 
@@ -409,7 +458,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(inicialX,y),SpriteType::inimigo,direction));
+                }
             }
             break;
         case 3:
@@ -425,7 +480,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+                }
 
             }else if(y < (2 * rHeight3) + room.getMiny()){
                 velDir = btween3(gen);
@@ -440,7 +501,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+                }
            
             }else{
                 velDir = btween2(gen);
@@ -453,11 +520,17 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(-inicialX,y),SpriteType::inimigo,direction));
+                }
             }
             break;
         default:
-            int x = Xgen(gen);      
+            x = Xgen(gen);      
             if(x < rWidth3 + room.getMinx()){
                 velDir = btween2(gen);
 
@@ -469,7 +542,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                }
 
             }else if(x < (2 * rWidth3) + room.getMinx()){
                 velDir = btween3(gen);
@@ -484,7 +563,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                }
            
             }else{
                 velDir = btween2(gen);
@@ -497,7 +582,13 @@ void Game::createNewEnemy(){
 
                 direction.multMatrix(speedMatrix);       
 
-                entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                type = btween4(gen);
+
+                if(type == 0){
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo02,direction));
+                }else{
+                    entities.push_back(make_unique<Entity>(poly,Vertex(x,inicialY),SpriteType::inimigo,direction));
+                }
             }
 
             break;

@@ -5,6 +5,7 @@ enum class SpriteType{
     player_right,
     player_left,
     inimigo,
+    inimigo02,
     room01,
     project,
     upgrade,

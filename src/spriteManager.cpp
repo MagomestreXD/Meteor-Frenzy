@@ -23,6 +23,9 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::inimigo:
             path = "resources/inimigo.png";
             break;
+        case SpriteType::inimigo02:
+            path = "resources/inimigo02.png";
+            break;
         case SpriteType::room01:
             path = "resources/room01.png";
             break;
