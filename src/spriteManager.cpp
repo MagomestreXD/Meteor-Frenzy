@@ -11,6 +11,15 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::player:
             path = "resources/mary64.png";
             break;
+        case SpriteType::player_back:
+            path = "resources/mary64_back.png";
+            break;
+        case SpriteType::player_right:
+            path = "resources/mary64_right.png";
+            break;       
+        case SpriteType::player_left:
+            path = "resources/mary64_left.png";
+            break;
         case SpriteType::inimigo:
             path = "resources/inimigo.png";
             break;
