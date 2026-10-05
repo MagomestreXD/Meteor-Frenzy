@@ -46,25 +46,25 @@ class Player : public Entity{
             if(inputs.up){
                 float dir [3][3] = {{1,0,0},{0,1,-1},{0,0,1}};
                 direction.multMatrix(dir);
-                type = SpriteType::player_back;
+                key.setType(SpriteType::player_back);
             }
 
             if(inputs.down){
                 float dir [3][3] = {{1,0,0},{0,1,1},{0,0,1}};
                 direction.multMatrix(dir);
-                type = SpriteType::player;
+                key.setType(SpriteType::player);
             }
 
             if(inputs.left){
                 float dir [3][3] = {{1,0,-1},{0,1,0},{0,0,1}};
                 direction.multMatrix(dir);
-                type = SpriteType::player_left;
+                key.setType(SpriteType::player_left);
             }
 
             if(inputs.right){
                 float dir [3][3] = {{1,0,1},{0,1,0},{0,0,1}};
                 direction.multMatrix(dir);
-                type = SpriteType::player_right;
+                key.setType(SpriteType::player_right);
             }
 
             double stepM [3][3]= {{speed * step,0,0},{0,speed * step,0},{0,0,1}};       

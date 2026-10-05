@@ -10,12 +10,12 @@ class Entity{
         Vertex pos;
         Vertex prevPos;
         Vertex speedVec;
-        SpriteType type;
+        SpriteKey key;
 
     public: 
-        Entity(Polygon poly,Vertex pos,SpriteType type):poly(poly),pos(pos),prevPos(pos),type(type){};
+        Entity(Polygon poly,Vertex pos,SpriteType type):poly(poly),pos(pos),prevPos(pos),key(type){};
 
-        Entity(Polygon poly,Vertex pos,SpriteType type,Vertex speedVec):poly(poly),pos(pos),prevPos(pos),type(type),speedVec(speedVec){};
+        Entity(Polygon poly,Vertex pos,SpriteType type,Vertex speedVec):poly(poly),pos(pos),prevPos(pos),key(type),speedVec(speedVec){};
 
         void drawEntity(Rasterizer* rasterizer,SpriteManager* spriteManager,float scale,double alpha){
             Vertex tempCurrent = pos;
@@ -65,12 +65,12 @@ class Entity{
                 return;
             }
 
-            (*rasterizer).drawSprite(betweenPoly,(*spriteManager).getSprite(rasterizer,poly.multMatrix(scaleM),type),false);
+            (*rasterizer).drawSprite(betweenPoly,(*spriteManager).getSprite(rasterizer,poly.multMatrix(scaleM),key.getSpriteType()),false);
 
         }
 
         SpriteType getType(){
-            return type;
+            return key.getSpriteType();
         }
 
         void update(double step){
