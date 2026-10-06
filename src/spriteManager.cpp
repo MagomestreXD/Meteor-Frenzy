@@ -20,6 +20,18 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::player_left:
             path = "resources/mary64_left.png";
             break;
+        case SpriteType::player_up_ani:
+            path = "resources/player_up_ani.png";
+            break;
+        case SpriteType::player_down_ani:
+            path = "resources/player_down_ani.png";
+            break;
+        case SpriteType::player_right_ani:
+            path = "resources/player_right_ani.png";
+            break;
+        case SpriteType::player_left_ani:
+            path = "resources/player_left_ani.png";
+            break;
         case SpriteType::inimigo:
             path = "resources/inimigo.png";
             break;

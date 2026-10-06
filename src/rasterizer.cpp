@@ -845,6 +845,153 @@ int framebufferStart = framebufferIndex + drawMinX;
     }
 }
 
+void Rasterizer::drawSpriteAnimated(Polygon poly, Texture* sprite,bool opaque,int currentFrame){
+
+    vector<Vertex>* verteces = poly.getVerteces();
+
+    int maxy = (int)(*verteces)[0].getY();
+    int miny = (int)(*verteces)[0].getY();
+    int maxx = (int)(*verteces)[0].getX();
+    int minx = (int)(*verteces)[0].getX();
+
+    for(int i = 1; i < (*verteces).size(); i++){
+        if(maxy < (int)(*verteces)[i].getY()){
+            maxy = (int)(*verteces)[i].getY();
+        }
+
+        if(miny > (int)(*verteces)[i].getY()){
+            miny = (int)(*verteces)[i].getY();
+        }
+
+        if(maxx < (int)(*verteces)[i].getX()){
+            maxx = (int)(*verteces)[i].getX();
+        }
+
+        if(minx > (int)(*verteces)[i].getX()){
+            minx = (int)(*verteces)[i].getX();
+        }
+    }
+
+    int polyWidth = maxx - minx;
+    int polyHeight = maxy - miny;
+
+    int frameSize = polyWidth * polyHeight;
+
+    vector<uint32_t>frame(frameSize);
+    vector<uint32_t>& textureData = sprite->getData();
+
+    int textureWidth = sprite->getWidth();
+    int textureHeight = sprite->getHeight();
+
+    int framePacing = currentFrame * polyWidth;
+
+    for(int i = 0; i < polyHeight; i++){
+        int iTextureWidth = i * textureWidth;
+        for(int j = 0; j < polyWidth; j++){
+            int index = iTextureWidth + j + framePacing;
+            if(index >= 0 && index < textureWidth * textureHeight){
+                frame[i * polyWidth + j] = textureData[index];
+            }
+        }
+    }
+
+    int camX = (int)(camPos.getX() * zoom);
+    int camY = (int)(camPos.getY() * zoom);
+
+    int screenMinX = minx - camX + width / 2;
+    int screenMaxX = maxx - camX + width / 2;
+
+    int screenMinY = miny - camY + height / 2;
+    int screenMaxY = maxy - camY + height / 2;
+
+    int drawMinX = max(0, screenMinX);
+    int drawMaxX = min(width, screenMaxX);
+
+    int drawMinY = max(0, screenMinY);
+    int drawMaxY = min(height, screenMaxY);
+
+    if(drawMinX >= drawMaxX || drawMinY >= drawMaxY){
+        return;
+    }
+
+    int frameStartX = drawMinX - screenMinX;
+    int frameStartY = drawMinY - screenMinY;
+    int numOfLines = drawMaxY - drawMinY;
+
+    int numOfPixels = drawMaxX - drawMinX;
+
+    int frameAvailableWidth = polyWidth - frameStartX;
+    int frameAvailableHeight = polyHeight - frameStartY;
+
+    if(numOfPixels > frameAvailableWidth){
+        numOfPixels = frameAvailableWidth;
+    }
+
+    if(numOfLines > frameAvailableHeight){
+        numOfLines = frameAvailableHeight;
+    }
+
+    for(int y = 0; y < numOfLines ; y++){
+
+        int frameY = frameStartY + y;
+
+        int framebufferIndex = (drawMinY + y) * width;
+        int frameIndex = frameY * polyWidth + frameStartX;
+
+        int framebufferStart = framebufferIndex + drawMinX;
+
+    if(frameIndex < 0 ||
+       frameIndex + numOfPixels > frameSize){
+
+        cout << "\n=== ERRO FRAME ===\n";
+        cout << "FrameIndex: " << frameIndex << "\n";
+        cout << "numOfPixels: " << numOfPixels << "\n";
+        cout << "FrameSize: " << frameSize << "\n";
+        cout << "frameY: " << frameY << "\n";
+        cout << "frameStartX: " << frameStartX << "\n";
+        cout << "frameWidth: " << polyWidth << "\n";
+        cout << "numOfLines: " << numOfLines << "\n";
+        cout << "y: " << y << "\n";
+
+        return;
+    }
+
+    if(framebufferStart < 0 ||
+       framebufferStart + numOfPixels > (int)framebuffer.size()){
+
+        cout << "\n=== ERRO FRAMEBUFFER ===\n";
+        cout << "framebufferStart: " << framebufferStart << "\n";
+        cout << "numOfPixels: " << numOfPixels << "\n";
+        cout << "framebufferSize: " << framebuffer.size() << "\n";
+        cout << "drawMinX: " << drawMinX << "\n";
+        cout << "drawMinY: " << drawMinY << "\n";
+        cout << "y: " << y << "\n";
+
+        return;
+    }
+
+        if(opaque){
+            memcpy(
+                &framebuffer[framebufferIndex + drawMinX],
+                &frame[frameIndex],
+                numOfPixels * sizeof(uint32_t)
+            );
+        }else{
+            for(int x = drawMinX; x < drawMaxX; x++){
+
+                uint32_t pixel = frame[frameIndex];
+
+                if(pixel != 0){
+                    framebuffer[framebufferIndex + x] = pixel;
+                    //setPixel(x, pixel, framebufferIndex);
+                }
+
+                frameIndex++;
+            }
+        }
+    }
+}
+
 void Rasterizer::setCamPos(Vertex pos){
     camPos = pos;
 }

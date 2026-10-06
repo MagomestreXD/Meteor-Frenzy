@@ -46,6 +46,8 @@ class Rasterizer {
 
         void drawSprite(Polygon poly,Texture* sprite,bool opaque);
 
+        void drawSpriteAnimated(Polygon poly,Texture* sprite,bool opaque,int currentFrame);
+
         void setCamPos(Vertex pos);
 
         Vertex getCamPos();
