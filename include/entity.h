@@ -103,6 +103,12 @@ class Entity{
             }
         }       
 
+
+        void drawPolygon(Rasterizer* rasterizer){
+            float transMatrix [3][3] = {{1,0,pos.getX()},{0,1,pos.getY()},{0,0,1}};
+            rasterizer->scanLine(poly.multMatrix(transMatrix));
+        }
+
         Polygon getPolygon(){
             return poly;
         }

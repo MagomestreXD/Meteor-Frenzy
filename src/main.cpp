@@ -32,7 +32,7 @@ int main(){
 
     Polygon polyDif(vector<Vertex>{Vertex(-16,-32),Vertex(16,-32),Vertex(16,32),Vertex(-16,32)});
 
-    float scale = 2.0f;
+    float scale = 1.0f;
 
     vector<unique_ptr<Entity>> entities;
 

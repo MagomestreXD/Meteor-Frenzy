@@ -225,7 +225,7 @@ void Rasterizer::floodFill(Vertex coord,uint32_t color){
             continue;
         }
 
-        setPixel(pixel.getX(),pixel.getY(),color,true);   
+        setPixel(pixel.getX(),pixel.getY(),color,false);   
 
         pixels.push(pixel.addCopy(Vertex(1,0)));
         pixels.push(pixel.addCopy(Vertex(-1,0)));

@@ -1,8 +1,8 @@
 
 class GameState {
     public:
-        bool mainMenu= false;
-        bool playing = true;
+        bool mainMenu= true;
+        bool playing = false;
         bool pause = false;
         bool victory = false;
         bool defeat = false;

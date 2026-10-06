@@ -19,6 +19,7 @@ class Game {
         vector<unique_ptr<Entity>> entities;
         vector<unique_ptr<Entity>> projectiles;
         vector<unique_ptr<Upgrade>> upgrades;
+        vector<unique_ptr<Entity>> buttons;
         Room room;
         Rasterizer rasterizer;
         SpriteManager spriteManager;
@@ -34,9 +35,10 @@ class Game {
         double velocityDificulty = 0.30;
         double spawnMaxDificulty = 0.2;
         double gameTimeObjective = 300.0;
+        Entity background;
 
     public:
-        Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.12,(room.getMaxy() - room.getMiny()) * 0.12,0.12f){
+        Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.12,(room.getMaxy() - room.getMiny()) * 0.12,0.12f),background(Polygon(vector<Vertex>{Vertex(-640,-360),Vertex(640,-360),Vertex(640,360),Vertex(-640,360)}),Vertex(0,0),SpriteType::start_menu){
             spawnInterval = inicialSpawnInterval;
         };
 
@@ -206,7 +208,21 @@ class Game {
                     minimap.draw(&rasterizer,player->getPos());
                 }
             }else if(state.mainMenu){
-                drawMainMenu();
+                drawMainMenu(alpha);
+                if(buttons.empty()){
+                    Polygon buttonPoly(vector<Vertex>{Vertex(-100,-25,0x7B2CBFFF),Vertex(100,-25,0x0000FFFF),Vertex(100,25,0x0000FFFF),Vertex(-100,25,0x7B2CBFFF)});
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,0),SpriteType::Count));   
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,100),SpriteType::Count));
+                }
+                
+                for(unique_ptr<Entity>& button : buttons){
+                    button->drawPolygon(&rasterizer);
+                }
+
+                rasterizer.drawLine(370,-320,420,-320,0xFFFFFFFF);
+                rasterizer.drawLine(370,-320,380,-250,0xFFFFFFFF);
+                rasterizer.drawLine(420,-320,380,-250,0xFFFFFFFF);
+                rasterizer.floodFill(Vertex(371,-319),0x7B2CBFFF);
             }
         }
 
@@ -232,8 +248,8 @@ class Game {
             return &inputs;
         }
 
-        void drawMainMenu(){
-
+        void drawMainMenu(float alpha){
+            background.drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(),alpha);
         }
 
         void checkCollisions();

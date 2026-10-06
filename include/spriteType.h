@@ -14,5 +14,6 @@ enum class SpriteType{
     room02,
     project,
     upgrade,
+    start_menu,
     Count
 };
