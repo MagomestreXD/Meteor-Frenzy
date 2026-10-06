@@ -185,8 +185,6 @@ class Player : public Entity{
             }
         }
 
-
-
         int getHealth(){
             return health;
         }
