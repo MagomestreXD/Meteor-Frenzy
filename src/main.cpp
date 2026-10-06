@@ -38,7 +38,7 @@ int main(){
 
     auto player = make_unique<Player>(polyDif,Vertex(0,0),100,SpriteType::player,1.0f);
 
-    Room room(Polygon(vector<Vertex>{Vertex(-769,-432),Vertex(768,-432),Vertex(768,432),Vertex(-768,432)}),poly64,SpriteType::room02);
+    Room room(Polygon(vector<Vertex>{Vertex(-1538,-864),Vertex(1538,-864),Vertex(1538,864),Vertex(-1538,864)}),poly64,SpriteType::room02);
 
     Game game(move(player),move(entities),Rasterizer(renderer,Height,Width,scale),SpriteManager(scale),room);   
 

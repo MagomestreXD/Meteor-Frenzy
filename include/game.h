@@ -33,7 +33,7 @@ class Game {
         double spawnMaxDificulty = 0.2;
 
     public:
-        Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.21,(room.getMaxy() - room.getMiny()) * 0.21,0.21f){
+        Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.12,(room.getMaxy() - room.getMiny()) * 0.12,0.12f){
             spawnInterval = inicialSpawnInterval;
         };
 
