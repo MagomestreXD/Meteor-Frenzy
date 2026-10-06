@@ -53,6 +53,12 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::start_menu:
             path = "resources/start_menu.png";
             break;
+        case SpriteType::play_txt:
+            path = "resources/play_txt.png";
+            break;
+        case SpriteType::quit_txt:
+            path = "resources/quit_txt.png";
+            break;
         default:
             path = "resources/bruh.png";
             break;

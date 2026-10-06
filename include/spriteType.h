@@ -15,5 +15,7 @@ enum class SpriteType{
     project,
     upgrade,
     start_menu,
+    play_txt,
+    quit_txt,
     Count
 };

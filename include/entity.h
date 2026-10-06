@@ -113,6 +113,10 @@ class Entity{
             return poly;
         }
 
+        Polygon* getPolygonPtr(){
+            return &poly;
+        }
+
         Vertex getPos(){
             return pos;
         }
@@ -125,4 +129,11 @@ class Entity{
             pos = newPos;
             return;
         }
+
+        bool isTouching(float x,float y){
+            float transMatrix[3][3] = {{1,0,pos.getX()},{0,1,pos.getY()},{0,0,1}};
+
+            return poly.multMatrix(transMatrix).isTouching(x,y);
+        }
+
 };

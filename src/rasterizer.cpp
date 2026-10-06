@@ -43,7 +43,10 @@ void Rasterizer::setPixel(int x,uint32_t color,int yWidth){
     if(index < 0 || index >= (int)framebuffer.size()){
         return;
     }
-    framebuffer[index]= color;
+    if(color != 0){
+        framebuffer[index]= color;
+    }
+    
     return;
 }
 
@@ -715,7 +718,7 @@ void Rasterizer::drawSprite(Polygon poly, Texture* sprite){
 }
 */
 
-void Rasterizer::drawSprite(Polygon poly, Texture* sprite,bool opaque){
+void Rasterizer::drawSprite(Polygon poly, Texture* sprite, bool opaque){
 
     vector<Vertex>* verteces = poly.getVerteces();
 

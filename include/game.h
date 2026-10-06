@@ -209,20 +209,46 @@ class Game {
                 }
             }else if(state.mainMenu){
                 drawMainMenu(alpha);
+                uint32_t blue = 0x0000FFFF;
+                uint32_t purple = 0x7B2CBFFF;
+                uint32_t yellow = 0xFFFF00FF;
+                uint32_t orange = 0xFF7000FF;
+
+                float mx;
+                float my;
+
+                SDL_GetMouseState(&mx,&my);
+
                 if(buttons.empty()){
-                    Polygon buttonPoly(vector<Vertex>{Vertex(-100,-25,0x7B2CBFFF),Vertex(100,-25,0x0000FFFF),Vertex(100,25,0x0000FFFF),Vertex(-100,25,0x7B2CBFFF)});
-                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,0),SpriteType::Count));   
-                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,100),SpriteType::Count));
+                    Polygon buttonPoly(vector<Vertex>{Vertex(-100,-25),Vertex(100,-25),Vertex(100,25),Vertex(-100,25)});
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,0),SpriteType::play_txt));   
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,100),SpriteType::quit_txt));
                 }
                 
+                vector<Vertex> normal{Vertex(-100,-25,purple),Vertex(100,-25,blue),Vertex(100,25,blue),Vertex(-100,25,purple)};
+                vector<Vertex> selected{Vertex(-100,-25,orange),Vertex(100,-25,yellow),Vertex(100,25,yellow),Vertex(-100,25,orange)};
+
+                mx -= rasterizer.getWidth()/2.0;
+                my -= rasterizer.getHeight()/2.0;
+
                 for(unique_ptr<Entity>& button : buttons){
+                    if(button->isTouching(mx,my)){
+                        button->getPolygonPtr()->setVerteces(selected);
+                    }else{
+                        button->getPolygonPtr()->setVerteces(normal);
+                    }
+
                     button->drawPolygon(&rasterizer);
+                    button->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(),alpha);
                 }
 
                 rasterizer.drawLine(370,-320,420,-320,0xFFFFFFFF);
                 rasterizer.drawLine(370,-320,380,-250,0xFFFFFFFF);
                 rasterizer.drawLine(420,-320,380,-250,0xFFFFFFFF);
                 rasterizer.floodFill(Vertex(371,-319),0x7B2CBFFF);
+
+                rasterizer.drawCircle(375,-230,12,0x808080FF);
+                rasterizer.floodFill(Vertex(375,-230),0x0000FFFF);
             }
         }
 
