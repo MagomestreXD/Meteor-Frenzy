@@ -13,7 +13,7 @@ class SpriteManager {
         vector<Sprite> sprites;
         float angleSlice;
     public:
-        SpriteManager(float scale):scale(scale),textures(vector<optional<Texture>>(static_cast<int>(SpriteType::Count))),angleSlice(22.5f * M_PI / 180.0f){
+        SpriteManager(float scale):scale(scale),textures(vector<optional<Texture>>(static_cast<int>(SpriteType::Count))),angleSlice(36.0f * M_PI / 180.0f){
         }
 
         void loadTexture(SpriteKey* key);

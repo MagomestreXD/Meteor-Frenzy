@@ -27,7 +27,9 @@ int main(){
     SDL_Renderer *renderer = SDL_CreateRenderer(window, NULL);
 
     Polygon poly(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)});
- 
+
+    Polygon poly64(vector<Vertex>{Vertex(-32,-32),Vertex(32,-32),Vertex(32,32),Vertex(-32,32)});
+
     Polygon polyDif(vector<Vertex>{Vertex(-16,-32),Vertex(16,-32),Vertex(16,32),Vertex(-16,32)});
 
     float scale = 2.0f;
@@ -36,7 +38,7 @@ int main(){
 
     auto player = make_unique<Player>(polyDif,Vertex(0,0),100,SpriteType::player,1.0f);
 
-    Room room(Polygon(vector<Vertex>{Vertex(-769,-432),Vertex(768,-432),Vertex(768,432),Vertex(-768,432)}),Polygon(vector<Vertex>{Vertex(-16,-16),Vertex(16,-16),Vertex(16,16),Vertex(-16,16)}),SpriteType::room01);
+    Room room(Polygon(vector<Vertex>{Vertex(-769,-432),Vertex(768,-432),Vertex(768,432),Vertex(-768,432)}),poly64,SpriteType::room02);
 
     Game game(move(player),move(entities),Rasterizer(renderer,Height,Width,scale),SpriteManager(scale),room);   
 

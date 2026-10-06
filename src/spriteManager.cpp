@@ -29,6 +29,9 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::room01:
             path = "resources/room01.png";
             break;
+        case SpriteType::room02:
+            path = "resources/room02.png";
+            break;
         case SpriteType::project:
             path = "resources/project.png";
             break;
@@ -84,7 +87,7 @@ void SpriteManager::loadSprite(Rasterizer* rasterizer,Polygon* poly,SpriteKey* k
 
         sprites.push_back(Sprite((*rasterizer).scanLineNearestNeighbor(*poly,textures[index].value()),*key));           
 
-    }else { 
+    }else{ 
         SpriteKey zeroKey(key);
         bool present = false;
         Sprite* spr;
