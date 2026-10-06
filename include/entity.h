@@ -11,11 +11,15 @@ class Entity{
         Vertex prevPos;
         Vertex speedVec;
         SpriteKey key;
-
+        bool rotates;
+        float rotateTimer = 0;
+        float rotateTimeSlice;
     public: 
-        Entity(Polygon poly,Vertex pos,SpriteType type):poly(poly),pos(pos),prevPos(pos),key(type){};
+        Entity(Polygon poly,Vertex pos,SpriteType type):poly(poly),pos(pos),prevPos(pos),key(type),rotates(false){};
 
-        Entity(Polygon poly,Vertex pos,SpriteType type,Vertex speedVec):poly(poly),pos(pos),prevPos(pos),key(type),speedVec(speedVec){};
+        Entity(Polygon poly,Vertex pos,SpriteType type,Vertex speedVec):poly(poly),pos(pos),prevPos(pos),key(type),speedVec(speedVec),rotates(false){};
+
+        Entity(Polygon poly,Vertex pos,SpriteType type,Vertex speedVec,float rotateTimeSlice):poly(poly),pos(pos),prevPos(pos),key(type),speedVec(speedVec),rotates(true),rotateTimeSlice(rotateTimeSlice){};
 
         void drawEntity(Rasterizer* rasterizer,SpriteManager* spriteManager,float scale,double alpha){
             Vertex tempCurrent = pos;
@@ -65,7 +69,7 @@ class Entity{
                 return;
             }
 
-            (*rasterizer).drawSprite(betweenPoly,(*spriteManager).getSprite(rasterizer,poly.multMatrix(scaleM),key.getSpriteType()),false);
+            (*rasterizer).drawSprite(betweenPoly,(*spriteManager).getSprite(rasterizer,poly.multMatrix(scaleM),&key),false);
 
         }
 
@@ -79,7 +83,25 @@ class Entity{
             prevPos = pos;           
 
             pos.multMatrix(transMatrix);
+
         }
+
+        void update(double step,float angleSlice){
+            double transMatrix [3][3] = {{1,0,speedVec.getX() * step},{0,1,speedVec.getY() * step},{0,0,1}};
+
+            prevPos = pos;           
+
+            pos.multMatrix(transMatrix);
+
+            if(rotates){
+                rotateTimer += step;
+
+                if(rotateTimer >= rotateTimeSlice){
+                    key.nextAngle(angleSlice);
+                    rotateTimer = 0;
+                }
+            }
+        }       
 
         Polygon getPolygon(){
             return poly;

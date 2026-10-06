@@ -94,7 +94,9 @@ class Game {
 
                 velocity.multMatrix(speedMatrix);
 
-                projectiles.push_back(make_unique<Entity>(poly,projPos,SpriteType::project,velocity));
+                float rotateTimeSlice = 1/ (2.0 * M_PI/spriteManager.getAngleSlice());
+
+                projectiles.push_back(make_unique<Entity>(poly,projPos,SpriteType::project,velocity,rotateTimeSlice));
             }
 
             if(!entities.empty()){
@@ -105,7 +107,7 @@ class Game {
 
             if(!projectiles.empty()){
                 for(int i = 0; i < projectiles.size(); i++){
-                    projectiles[i]->update(step);
+                    projectiles[i]->update(step,spriteManager.getAngleSlice());
                 }
             }
 

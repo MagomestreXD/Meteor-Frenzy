@@ -75,32 +75,56 @@ void SpriteManager::loadTexture(SpriteKey* key){
 }
 
 void SpriteManager::loadSprite(Rasterizer* rasterizer,Polygon* poly,SpriteKey* key){
+    if(key->getAngleIndex() == 0){
+        int index = static_cast<int>((*key).getSpriteType());
 
-    int index = static_cast<int>((*key).getSpriteType());
+        if(!textures[index].has_value()){
+            loadTexture(key);
+        }
 
-    if(!textures[index].has_value()){
-        loadTexture(key);
+        sprites.push_back(Sprite((*rasterizer).scanLineNearestNeighbor(*poly,textures[index].value()),*key));           
+
+    }else { 
+        SpriteKey zeroKey(key);
+        bool present = false;
+        Sprite* spr;
+        for(Sprite& sprite: sprites){
+            if(*sprite.getKey() == zeroKey){
+                spr = &sprite;
+                present = true;
+            }
+        }
+        
+        if(!present){
+            int index = static_cast<int>((*key).getSpriteType());
+
+            if(!textures[index].has_value()){
+                loadTexture(key);
+            }
+
+            Sprite original((*rasterizer).scanLineNearestNeighbor(*poly,textures[index].value()),zeroKey); 
+            sprites.push_back(original);   
+
+            sprites.push_back(original.rotateSprite(*key,angleSlice));
+        }else{
+            sprites.push_back(spr->rotateSprite(*key,angleSlice));
+        }
     }
-    
-    sprites.push_back(Sprite((*rasterizer).scanLineNearestNeighbor(*poly,textures[index].value()),*key));           
-
     return;
 
 }
 
-Texture* SpriteManager::getSprite(Rasterizer* rasterizer,Polygon poly,SpriteType type){
-    SpriteKey key(type);
-
+Texture* SpriteManager::getSprite(Rasterizer* rasterizer,Polygon poly,SpriteKey* key){
     for(Sprite& sprite: sprites){
-        if(*sprite.getKey() == key){
+        if(*sprite.getKey() == *key){
             return sprite.getData();
         }
     }
 
-    loadSprite(rasterizer,&poly,&key);
+    loadSprite(rasterizer,&poly,key);
 
     for(Sprite& sprite: sprites){
-        if(*sprite.getKey() == key){
+        if(*sprite.getKey() == *key){
             return sprite.getData();
         }
     }
