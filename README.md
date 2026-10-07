@@ -1,5 +1,5 @@
 #About the game:
-This is a simple game for a Computer Graphics project. 
+This is a simple game for a Computer Graphics project./n 
 You are a space traveler equiped with a powerful star gun and currently under alien attack.
 You start with 3 lives and your objective is to survive 5 minutes until your rescue arrives.
 Enemies will get faster and numerous as time goes on. Therefore, you should try going for power-ups whenever the opportunity arrives.
