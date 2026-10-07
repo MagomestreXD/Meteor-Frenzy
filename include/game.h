@@ -58,11 +58,10 @@ class Game {
         }
 
         void updateLogic(double step){
-            if(state.playing){
                 if(inputs.esc){
                     running = false;
                 }
-
+            if(state.playing){
                 if(player->getHealth() <= 0){
                     state.setDefeat();
                     buttons.clear();

@@ -1,10 +1,6 @@
 # ninja log v7
-49	1766	8130388016198621	CMakeFiles/MeuJogo.dir/src/spriteManager.cpp.obj	a8ae31b37489d4ad
-40	1901	8130388016108234	CMakeFiles/MeuJogo.dir/src/rasterizer.cpp.obj	8ca09c7eed9dd57b
-60	2379	8130388016308607	CMakeFiles/MeuJogo.dir/src/game.cpp.obj	df486f72767dbf5b
-31	2675	8130388016023786	CMakeFiles/MeuJogo.dir/src/main.cpp.obj	d24327f005442ec6
-2675	3056	8130388042459984	MeuJogo.exe	8637ebe23112971d
-25	2169	8130401258768473	CMakeFiles/MeuJogo.dir/src/game.cpp.obj	df486f72767dbf5b
-35	2506	8130401771821703	CMakeFiles/MeuJogo.dir/src/main.cpp.obj	d24327f005442ec6
-17	2300	8130402266116797	CMakeFiles/MeuJogo.dir/src/main.cpp.obj	d24327f005442ec6
-2302	2721	8130402288967566	MeuJogo.exe	8637ebe23112971d
+49	3024	8131185489359375	CMakeFiles/MeteorFrenzy.dir/src/spriteManager.cpp.obj	f895132353f3fdff
+40	3549	8131185489269415	CMakeFiles/MeteorFrenzy.dir/src/rasterizer.cpp.obj	2f2eefdc8a48ccb2
+32	4070	8131185489185806	CMakeFiles/MeteorFrenzy.dir/src/main.cpp.obj	2f499f9104c1b3e0
+57	4085	8131185489443534	CMakeFiles/MeteorFrenzy.dir/src/game.cpp.obj	2de1693d220d149
+4085	4490	8131185529716345	MeteorFrenzy.exe	ce2c6cce2fc7cd3d

@@ -84,7 +84,7 @@ CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/levid/OneDrive/Desktop/Trabalho
 CMAKE_GNUtoMS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/MeuJogo
+CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/MeteorFrenzy
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/msys64/ucrt64/bin/ld.exe
@@ -131,7 +131,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=MeuJogo
+CMAKE_PROJECT_NAME:STATIC=MeteorFrenzy
 
 //Value Computed by CMake
 CMAKE_PROJECT_SPDX_LICENSE:STATIC=
@@ -238,19 +238,19 @@ FluidSynth_LIBRARY:FILEPATH=C:/msys64/ucrt64/lib/libfluidsynth-3.dll.a
 FluidSynth_LINK_DIRECTORIES:PATH=C:/msys64/ucrt64/bin/../lib
 
 //Extra link libraries of FluidSynth
-FluidSynth_LINK_LIBRARIES:STRING=dsound;ksuser;winmm;ole32;ws2_32;m;sndfile;mp3lame;FLAC;m;ssp;vorbisenc;vorbis;m;ogg;opus;m;mpg123;shlwapi;portaudio;SDL3;m;kernel32;user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8;readline;termcap
+FluidSynth_LINK_LIBRARIES:STRING=dsound;ksuser;winmm;ole32;ws2_32;m;sndfile;mp3lame;FLAC;m;ssp;vorbisenc;vorbis;m;ogg;opus;m;mpg123;shlwapi;portaudio;SDL3;m;iconv;kernel32;user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8;readline;termcap
 
 //Extra link flags of FluidSynth
 FluidSynth_LINK_OPTIONS:STRING=C:/msys64/ucrt64/bin/../lib/libgomp.dll.a;C:/msys64/ucrt64/bin/../lib/libmingwthrd.a;-mwindows
 
 //Value Computed by CMake
-MeuJogo_BINARY_DIR:STATIC=C:/Users/levid/OneDrive/Desktop/TrabalhoCG2D/build
+MeteorFrenzy_BINARY_DIR:STATIC=C:/Users/levid/OneDrive/Desktop/TrabalhoCG2D/build
 
 //Value Computed by CMake
-MeuJogo_IS_TOP_LEVEL:STATIC=ON
+MeteorFrenzy_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-MeuJogo_SOURCE_DIR:STATIC=C:/Users/levid/OneDrive/Desktop/TrabalhoCG2D
+MeteorFrenzy_SOURCE_DIR:STATIC=C:/Users/levid/OneDrive/Desktop/TrabalhoCG2D
 
 //The directory containing a CMake configuration file for Ogg.
 Ogg_DIR:PATH=C:/msys64/ucrt64/lib/cmake/Ogg
@@ -410,9 +410,9 @@ CMAKE_CACHEFILE_DIR:INTERNAL=c:/Users/levid/OneDrive/Desktop/TrabalhoCG2D/build
 //Major version of cmake used to create the current loaded cache
 CMAKE_CACHE_MAJOR_VERSION:INTERNAL=4
 //Minor version of cmake used to create the current loaded cache
-CMAKE_CACHE_MINOR_VERSION:INTERNAL=2
+CMAKE_CACHE_MINOR_VERSION:INTERNAL=4
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=0
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=4
 //Path to CMake executable.
 CMAKE_COMMAND:INTERNAL=C:/msys64/ucrt64/bin/cmake.exe
 //Path to cpack program executable.
@@ -437,8 +437,13 @@ CMAKE_CXX_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_CXX_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_CXX_STANDARD_LIBRARIES
 CMAKE_CXX_STANDARD_LIBRARIES-ADVANCED:INTERNAL=1
+//Set initial state for CMake diagnostics; used to persist state
+// set by command-line options across invocations.
+CMAKE_DIAGNOSTIC_INIT:INTERNAL=CMD_AUTHOR=WARN;CMD_DEPRECATED=WARN;CMD_EXPERIMENTAL=WARN;CMD_INSTALL_ABSOLUTE_DESTINATION=IGNORE;CMD_POLICY=WARN;CMD_UNINITIALIZED=IGNORE;CMD_UNUSED_CLI=WARN
 //ADVANCED property for variable: CMAKE_DLLTOOL
 CMAKE_DLLTOOL-ADVANCED:INTERNAL=1
+//Deprecated.  Use -W[no-]error=deprecated instead.
+CMAKE_ERROR_DEPRECATED:INTERNAL=OFF
 //Executable file format
 CMAKE_EXECUTABLE_FORMAT:INTERNAL=Unknown
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS
@@ -545,6 +550,8 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_TAPI-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Deprecated.  Use -W[no-]deprecated instead.
+CMAKE_WARN_DEPRECATED:INTERNAL=ON
 //Details about finding FluidSynth
 FIND_PACKAGE_MESSAGE_DETAILS_FluidSynth:INTERNAL=[C:/msys64/ucrt64/lib/libfluidsynth-3.dll.a][C:/msys64/ucrt64/include][v2.6.1(2.2.0)]
 //Details about finding Opus
@@ -580,10 +587,10 @@ PC_FLUIDSYNTH_STATIC_CFLAGS:INTERNAL=-IC:/msys64/ucrt64/bin/../include;-IC:/msys
 PC_FLUIDSYNTH_STATIC_CFLAGS_I:INTERNAL=
 PC_FLUIDSYNTH_STATIC_CFLAGS_OTHER:INTERNAL=
 PC_FLUIDSYNTH_STATIC_INCLUDE_DIRS:INTERNAL=C:/msys64/ucrt64/bin/../include;C:/msys64/ucrt64/bin/../include/opus
-PC_FLUIDSYNTH_STATIC_LDFLAGS:INTERNAL=-LC:/msys64/ucrt64/bin/../lib;-lfluidsynth-3;-ldsound;-lksuser;-lwinmm;-lole32;-lws2_32;-lm;C:/msys64/ucrt64/bin/../lib/libgomp.dll.a;C:/msys64/ucrt64/bin/../lib/libmingwthrd.a;-lsndfile;-lmp3lame;-lFLAC;-lm;-lssp;-lvorbisenc;-lvorbis;-lm;-logg;-lopus;-lm;-lmpg123;-lshlwapi;-lportaudio;-lSDL3;-mwindows;-lm;-lkernel32;-luser32;-lgdi32;-lwinmm;-limm32;-lole32;-loleaut32;-lversion;-luuid;-ladvapi32;-lsetupapi;-lshell32;-ldinput8;-lreadline;-ltermcap
+PC_FLUIDSYNTH_STATIC_LDFLAGS:INTERNAL=-LC:/msys64/ucrt64/bin/../lib;-lfluidsynth-3;-ldsound;-lksuser;-lwinmm;-lole32;-lws2_32;-lm;C:/msys64/ucrt64/bin/../lib/libgomp.dll.a;C:/msys64/ucrt64/bin/../lib/libmingwthrd.a;-lsndfile;-lmp3lame;-lFLAC;-lm;-lssp;-lvorbisenc;-lvorbis;-lm;-logg;-lopus;-lm;-lmpg123;-lshlwapi;-lportaudio;-lSDL3;-mwindows;-lm;-liconv;-lkernel32;-luser32;-lgdi32;-lwinmm;-limm32;-lole32;-loleaut32;-lversion;-luuid;-ladvapi32;-lsetupapi;-lshell32;-ldinput8;-lreadline;-ltermcap
 PC_FLUIDSYNTH_STATIC_LDFLAGS_OTHER:INTERNAL=C:/msys64/ucrt64/bin/../lib/libgomp.dll.a;C:/msys64/ucrt64/bin/../lib/libmingwthrd.a;-mwindows
 PC_FLUIDSYNTH_STATIC_LIBDIR:INTERNAL=
-PC_FLUIDSYNTH_STATIC_LIBRARIES:INTERNAL=fluidsynth-3;dsound;ksuser;winmm;ole32;ws2_32;m;sndfile;mp3lame;FLAC;m;ssp;vorbisenc;vorbis;m;ogg;opus;m;mpg123;shlwapi;portaudio;SDL3;m;kernel32;user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8;readline;termcap
+PC_FLUIDSYNTH_STATIC_LIBRARIES:INTERNAL=fluidsynth-3;dsound;ksuser;winmm;ole32;ws2_32;m;sndfile;mp3lame;FLAC;m;ssp;vorbisenc;vorbis;m;ogg;opus;m;mpg123;shlwapi;portaudio;SDL3;m;iconv;kernel32;user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8;readline;termcap
 PC_FLUIDSYNTH_STATIC_LIBRARY_DIRS:INTERNAL=C:/msys64/ucrt64/bin/../lib
 PC_FLUIDSYNTH_STATIC_LIBS:INTERNAL=
 PC_FLUIDSYNTH_STATIC_LIBS_L:INTERNAL=
