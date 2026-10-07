@@ -25,7 +25,6 @@ class Game {
         SpriteManager spriteManager;
         InputState inputs;
         GameState state;
-        int round = 1;
         Viewport minimap;
         double gameTimer = 0.0;
         double inicialSpawnInterval = 2.0;
@@ -36,6 +35,7 @@ class Game {
         double spawnMaxDificulty = 0.2;
         double gameTimeObjective = 300.0;
         Entity background;
+        bool running = true;
 
     public:
         Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.12,(room.getMaxy() - room.getMiny()) * 0.12,0.12f),background(Polygon(vector<Vertex>{Vertex(-640,-360),Vertex(640,-360),Vertex(640,360),Vertex(-640,360)}),Vertex(0,0),SpriteType::start_menu){
@@ -59,12 +59,22 @@ class Game {
 
         void updateLogic(double step){
             if(state.playing){
+                if(inputs.esc){
+                    running = false;
+                }
+
                 if(player->getHealth() <= 0){
                     state.setDefeat();
+                    buttons.clear();
+                    rasterizer.setCamPos(Vertex(0,0));
+                    return;
                 }
 
                 if(gameTimer >= gameTimeObjective){
                     state.setVictory();   
+                    buttons.clear();
+                    rasterizer.setCamPos(Vertex(0,0));
+                    return;
                 }
 
                 if(player->update(step,inputs)){
@@ -149,7 +159,73 @@ class Game {
 
                 spawnInterval = max(spawnMaxDificulty,inicialSpawnInterval - (gameTimer * spawnDificulty));
             }else if(state.mainMenu){
+                if(inputs.m1){
+                    if(!buttons.empty()){
+                        float mx;
+                        float my;
 
+                        SDL_GetMouseState(&mx,&my);
+
+                        mx -= rasterizer.getWidth()/2.0;
+                        my -= rasterizer.getHeight()/2.0;
+
+                        for(unique_ptr<Entity>& button : buttons){
+                            if(button->isTouching(mx,my)){
+                                if(button->getType() == SpriteType::play_txt){
+                                    state.setPlaying();
+                                }else if(button->getType() == SpriteType::quit_txt){
+                                    running = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }else if(state.defeat){
+                if(inputs.m1){
+                    if(!buttons.empty()){
+                        float mx;
+                        float my;
+
+                        SDL_GetMouseState(&mx,&my);
+
+                        mx -= rasterizer.getWidth()/2.0;
+                        my -= rasterizer.getHeight()/2.0;
+
+                        for(unique_ptr<Entity>& button : buttons){
+                            if(button->isTouching(mx,my)){
+                                if(button->getType() == SpriteType::tryAgain_txt){
+                                    resetGame();
+                                    state.setPlaying();
+                                }else if(button->getType() == SpriteType::quit_txt){
+                                    running = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }else if(state.victory){
+                if(inputs.m1){
+                    if(!buttons.empty()){
+                        float mx;
+                        float my;
+
+                        SDL_GetMouseState(&mx,&my);
+
+                        mx -= rasterizer.getWidth()/2.0;
+                        my -= rasterizer.getHeight()/2.0;
+
+                        for(unique_ptr<Entity>& button : buttons){
+                            if(button->isTouching(mx,my)){
+                                if(button->getType() == SpriteType::playAgain_txt){
+                                    resetGame();
+                                    state.setPlaying();
+                                }else if(button->getType() == SpriteType::quit_txt){
+                                    running = false;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }       
 
@@ -208,7 +284,8 @@ class Game {
                     minimap.draw(&rasterizer,player->getPos());
                 }
             }else if(state.mainMenu){
-                drawMainMenu(alpha);
+
+                drawBackground(alpha);
                 uint32_t blue = 0x0000FFFF;
                 uint32_t purple = 0x7B2CBFFF;
                 uint32_t yellow = 0xFFFF00FF;
@@ -239,7 +316,7 @@ class Game {
                     }
 
                     button->drawPolygon(&rasterizer);
-                    button->drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(),alpha);
+                    button->drawEntity(&rasterizer,&spriteManager);
                 }
 
                 rasterizer.drawLine(370,-320,420,-320,0xFFFFFFFF);
@@ -249,6 +326,77 @@ class Game {
 
                 rasterizer.drawCircle(375,-230,12,0x808080FF);
                 rasterizer.floodFill(Vertex(375,-230),0x0000FFFF);
+
+            }else if(state.defeat){
+                background.setType(SpriteType::defeat);
+                drawBackground(alpha);
+                uint32_t blue = 0x0000FFFF;
+                uint32_t purple = 0x7B2CBFFF;
+                uint32_t yellow = 0xFFFF00FF;
+                uint32_t orange = 0xFF7000FF;
+
+                float mx;
+                float my;
+
+                SDL_GetMouseState(&mx,&my);
+
+                if(buttons.empty()){
+                    Polygon buttonPoly(vector<Vertex>{Vertex(-100,-25),Vertex(100,-25),Vertex(100,25),Vertex(-100,25)});
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,0),SpriteType::tryAgain_txt));   
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,100),SpriteType::quit_txt));
+                }
+                
+                vector<Vertex> normal{Vertex(-100,-25,purple),Vertex(100,-25,blue),Vertex(100,25,blue),Vertex(-100,25,purple)};
+                vector<Vertex> selected{Vertex(-100,-25,orange),Vertex(100,-25,yellow),Vertex(100,25,yellow),Vertex(-100,25,orange)};
+
+                mx -= rasterizer.getWidth()/2.0;
+                my -= rasterizer.getHeight()/2.0;
+
+                for(unique_ptr<Entity>& button : buttons){
+                    if(button->isTouching(mx,my)){
+                        button->getPolygonPtr()->setVerteces(selected);
+                    }else{
+                        button->getPolygonPtr()->setVerteces(normal);
+                    }
+
+                    button->drawPolygon(&rasterizer);
+                    button->drawEntity(&rasterizer,&spriteManager);
+                }
+            }else if(state.victory){
+                background.setType(SpriteType::victory);
+                drawBackground(alpha);
+                uint32_t blue = 0x0000FFFF;
+                uint32_t purple = 0x7B2CBFFF;
+                uint32_t yellow = 0xFFFF00FF;
+                uint32_t orange = 0xFF7000FF;
+
+                float mx;
+                float my;
+
+                SDL_GetMouseState(&mx,&my);
+
+                if(buttons.empty()){
+                    Polygon buttonPoly(vector<Vertex>{Vertex(-100,-25),Vertex(100,-25),Vertex(100,25),Vertex(-100,25)});
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,0),SpriteType::playAgain_txt));   
+                    buttons.push_back(make_unique<Entity>(buttonPoly,Vertex(0,100),SpriteType::quit_txt));
+                }
+                
+                vector<Vertex> normal{Vertex(-100,-25,purple),Vertex(100,-25,blue),Vertex(100,25,blue),Vertex(-100,25,purple)};
+                vector<Vertex> selected{Vertex(-100,-25,orange),Vertex(100,-25,yellow),Vertex(100,25,yellow),Vertex(-100,25,orange)};
+
+                mx -= rasterizer.getWidth()/2.0;
+                my -= rasterizer.getHeight()/2.0;
+
+                for(unique_ptr<Entity>& button : buttons){
+                    if(button->isTouching(mx,my)){
+                        button->getPolygonPtr()->setVerteces(selected);
+                    }else{
+                        button->getPolygonPtr()->setVerteces(normal);
+                    }
+
+                    button->drawPolygon(&rasterizer);
+                    button->drawEntity(&rasterizer,&spriteManager);
+                }
             }
         }
 
@@ -274,8 +422,8 @@ class Game {
             return &inputs;
         }
 
-        void drawMainMenu(float alpha){
-            background.drawEntity(&rasterizer,&spriteManager,spriteManager.getScale(),alpha);
+        void drawBackground(float alpha){
+            background.drawEntity(&rasterizer,&spriteManager);
         }
 
         void checkCollisions();
@@ -289,5 +437,25 @@ class Game {
         void checkEnemiesOutOfBounds();
 
         void checkProjectilesOutOfBounds();
+
+        bool getRunning(){
+            return running;
+        }
+
+        void resetGame(){
+            entities.clear();
+            projectiles.clear();
+            upgrades.clear();
+            
+            gameTimer = 0;
+            spawnInterval = inicialSpawnInterval;
+            spawnTimer = 0;
+
+            Polygon polyDif(vector<Vertex>{Vertex(-16,-32),Vertex(16,-32),Vertex(16,32),Vertex(-16,32)});
+
+            player = make_unique<Player>(polyDif,Vertex(0,0),100,SpriteType::player,1.0f);
+
+            rasterizer.setCamPos(Vertex(0,0));
+        }
 };
 

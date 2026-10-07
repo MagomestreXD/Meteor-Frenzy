@@ -73,8 +73,49 @@ class Entity{
 
         }
 
+        void drawEntity(Rasterizer* rasterizer,SpriteManager* spriteManager){
+            double translation [3][3] = {{1,0,pos.getX()},{0,1,pos.getY()},{0,0,1}};
+
+            Polygon tPoly = poly.multMatrix(translation);
+
+            int maxy = (int) (*tPoly.getVerteces())[0].getY();
+            int miny = (int) (*tPoly.getVerteces())[0].getY();
+            int maxx = (int) (*tPoly.getVerteces())[0].getX();
+            int minx = (int) (*tPoly.getVerteces())[0].getX();
+
+            for(int i = 1; i < (*tPoly.getVerteces()).size(); i++){
+                if(maxy < (int) (*tPoly.getVerteces())[i].getY()){
+                    maxy = (int) (*tPoly.getVerteces())[i].getY();
+                }
+                if(miny > (int) (*tPoly.getVerteces())[i].getY()){
+                    miny = (int)(*tPoly.getVerteces())[i].getY();
+                }
+                if(maxx < (int) (*tPoly.getVerteces())[i].getX()){
+                    maxx = (int)(*tPoly.getVerteces())[i].getX();
+                }
+                if(minx > (int) (*tPoly.getVerteces())[i].getX()){
+                    minx = (int) (*tPoly.getVerteces())[i].getX();
+                }
+            }
+
+            int halfWidth = (*rasterizer).getWidth()/2; 
+            int halfHeight = (*rasterizer).getHeight()/2;
+
+            if(maxx + halfWidth < 0 || minx + halfWidth >= (*rasterizer).getWidth() || 
+               maxy + halfHeight < 0 || miny + halfHeight >= (*rasterizer).getHeight() ){
+                return;
+            }
+
+            (*rasterizer).drawSprite(tPoly,(*spriteManager).getSprite(rasterizer,poly,&key),false);
+
+        }
+
         SpriteType getType(){
             return key.getSpriteType();
+        }
+
+        void setType(SpriteType newType){
+            key.setType(newType);
         }
 
         void update(double step){

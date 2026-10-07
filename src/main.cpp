@@ -81,6 +81,9 @@ int main(){
                 if(event.key.key == SDLK_D){
                     (*game.getInputs()).right = true;
                 }
+                if(event.key.key == SDLK_ESCAPE){
+                    (*game.getInputs()).esc = true;
+                }
 
                 if(event.key.key == SDLK_J){
                     if((*game.getSpriteManager()).getScale() < 4){
@@ -118,6 +121,9 @@ int main(){
                 }
                 if(event.key.key == SDLK_D){
                     (*game.getInputs()).right = false;
+                }
+                if(event.key.key == SDLK_ESCAPE){
+                    (*game.getInputs()).esc = false;
                 }
             }
 
@@ -157,7 +163,8 @@ int main(){
         SDL_RenderTexture(renderer,texture,NULL,NULL);
 
         SDL_RenderPresent(renderer);
-        
+
+        running = game.getRunning();
     }
 
     SDL_DestroyWindow(window);

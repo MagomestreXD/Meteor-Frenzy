@@ -17,5 +17,9 @@ enum class SpriteType{
     start_menu,
     play_txt,
     quit_txt,
+    tryAgain_txt,
+    playAgain_txt,
+    defeat,
+    victory,
     Count
 };

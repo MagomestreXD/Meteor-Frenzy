@@ -59,6 +59,18 @@ void SpriteManager::loadTexture(SpriteKey* key){
         case SpriteType::quit_txt:
             path = "resources/quit_txt.png";
             break;
+        case SpriteType::tryAgain_txt:
+            path = "resources/tryAgain_txt.png";
+            break;
+        case SpriteType::playAgain_txt:
+            path = "resources/playAgain_txt.png";
+            break;
+        case SpriteType::defeat:
+            path = "resources/defeat.png";
+            break;
+        case SpriteType::victory:
+            path = "resources/victory.png";
+            break;
         default:
             path = "resources/bruh.png";
             break;
