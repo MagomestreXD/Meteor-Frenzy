@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(SDL3 REQUIRED)
 find_package(SDL3_image REQUIRED)
+find_package(SDL3_mixer REQUIRED)
 
 add_executable(MeuJogo
     src/main.cpp
@@ -22,6 +23,7 @@ target_include_directories(MeuJogo PRIVATE
 target_link_libraries(MeuJogo PRIVATE 
 	SDL3::SDL3
 	SDL3_image::SDL3_image-shared
+	SDL3_mixer::SDL3_mixer-shared	
 )
 
 add_custom_command(TARGET MeuJogo POST_BUILD

@@ -10,7 +10,7 @@
 #include "gameState.h"
 #include <iostream>
 #include <random>
-
+#include "audioManager.h"
 using namespace std;
 
 class Game {
@@ -36,7 +36,7 @@ class Game {
         double gameTimeObjective = 300.0;
         Entity background;
         bool running = true;
-
+//
     public:
         Game(unique_ptr<Player> player,vector<unique_ptr<Entity>> entities,Rasterizer rasterizer,SpriteManager spriteManager,Room room):player(move(player)),entities(move(entities)),rasterizer(rasterizer),spriteManager(spriteManager),room(room),minimap((room.getMaxx() - room.getMinx()) * 0.12,(room.getMaxy() - room.getMiny()) * 0.12,0.12f),background(Polygon(vector<Vertex>{Vertex(-640,-360),Vertex(640,-360),Vertex(640,360),Vertex(-640,360)}),Vertex(0,0),SpriteType::start_menu){
             spawnInterval = inicialSpawnInterval;

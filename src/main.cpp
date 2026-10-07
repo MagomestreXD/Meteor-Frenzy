@@ -60,6 +60,11 @@ int main(){
 
     game.createNewEnemy();
 
+    AudioManager audio;
+
+    audio.loadMusic("resources/Spider Dance - Toby Fox.mp3");
+    audio.playMusic();
+
     while(running){
         SDL_Event event;
 
