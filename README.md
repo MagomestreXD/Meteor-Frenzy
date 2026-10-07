@@ -1,2 +1,3 @@
-# TrabalhoCG2D
+#About the game:
+
 
