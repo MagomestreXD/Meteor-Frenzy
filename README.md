@@ -29,6 +29,8 @@ SDL3_Image is responsable for getting .png images and transforming them into a v
 SDL3_Mixer is responsable for getting a .mp3 music file and playing on repeat. The song was Not made by me. Song name: Spider Dance - TobyFox   
 link: https://www.youtube.com/watch?v=NH-GAwLAO30.  
 
+#Gameplay Video: https://www.youtube.com/watch?v=f5Yd5eEyc-A
+
 #How to Build:  
 1.Install cmake, SDL3, SDL3_Image and SDL3_Mixer (Make sure you add them to your PATH and that there is no version compatibility issues with SDL3 by updating all of them).  
 2.Download/clone this repository and delete /build if there is one.  
